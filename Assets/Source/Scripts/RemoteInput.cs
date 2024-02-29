@@ -6,9 +6,8 @@ namespace Source.Scripts
 {
     public class RemoteInput : MonoBehaviour
     {
-        public void SetPosition(Vector3 position) => 
-            transform.position = position;
-
+        [SerializeField] private EnemyCharacter _enemyCharacter;
+        
         public void OnChange(List<DataChange> changes)
         {
             Vector3 position = transform.position;
@@ -28,7 +27,7 @@ namespace Source.Scripts
                 }
             }
 
-            transform.position = position;
+            _enemyCharacter.SetPosition(position);
         }
     }
 }
