@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Source.Scripts
 {
     public class LocalInput : MonoBehaviour
     {
-        [SerializeField] private Player _player;
+        [SerializeField] private PlayerCharacter _player;
 
         private void Update()
         {

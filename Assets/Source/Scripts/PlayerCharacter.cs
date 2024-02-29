@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Source.Scripts
 {
-    public class Player : MonoBehaviour
+    public class PlayerCharacter : MonoBehaviour
     {
         [SerializeField] private float _speed;
 
