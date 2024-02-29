@@ -14,6 +14,9 @@ namespace Source.Scripts
             _direction.z = v;
         }
 
+        public void GetMoveInfo(out Vector3 position) => 
+            position = transform.position;
+
         private void Update() => 
             Move();
 

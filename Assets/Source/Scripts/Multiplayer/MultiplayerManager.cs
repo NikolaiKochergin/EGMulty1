@@ -1,4 +1,5 @@
-﻿using Colyseus;
+﻿using System.Collections.Generic;
+using Colyseus;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -7,7 +8,7 @@ namespace Source.Scripts.Multiplayer
     public class MultiplayerManager : ColyseusManager<MultiplayerManager>
     {
         [SerializeField] private GameObject _player;
-        [SerializeField] private GameObject _enemy;
+        [SerializeField] private RemoteInput _enemy;
         
         private ColyseusRoom<State> _room;
         
@@ -26,6 +27,9 @@ namespace Source.Scripts.Multiplayer
             _room.Leave();
         }
 
+        public void SendMessage(string key, Dictionary<string, object> data) => 
+            _room.Send(key, data);
+
         private async void Connect()
         {
             _room = await Instance.client.JoinOrCreate<State>("state_handler");
@@ -37,21 +41,35 @@ namespace Source.Scripts.Multiplayer
         {
             if(isfirststate == false)
                 return;
-
-            Player player = state.players[_room.SessionId];
-            Vector3 position = new Vector3(player.x - 200, 0, player.y- 200) / 8;
-            Instantiate(_player, position, quaternion.identity);
             
-            state.players.ForEach(ForEachEnemy);
+            state.players.ForEach((key, player) =>
+            {
+                if(key == _room.SessionId)
+                    CreatePlayer(player);
+                else
+                    CreateEnemy(key, player);
+            });
+
+            _room.State.players.OnAdd += CreateEnemy;
+            _room.State.players.OnRemove += RemoveEnemy;
         }
 
-        private void ForEachEnemy(string key, Player player)
+        private void CreatePlayer(Player player)
         {
-            if(key == _room.SessionId)
-                return;
-            
-            Vector3 position = new Vector3(player.x - 200, 0, player.y- 200) / 8;
-            Instantiate(_enemy, position, quaternion.identity);
+            Vector3 position = new Vector3(player.x, 0, player.y);
+            Instantiate(_player, position, quaternion.identity);
+        }
+
+        private void CreateEnemy(string key, Player player)
+        {
+            Vector3 position = new Vector3(player.x, 0, player.y);
+            RemoteInput enemy = Instantiate(_enemy, position, quaternion.identity);
+
+            player.OnChange += enemy.OnChange;
+        }
+
+        private void RemoveEnemy(string key, Player player)
+        {
         }
     }
 }

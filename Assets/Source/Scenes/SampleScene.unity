@@ -409,7 +409,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _colyseusSettings: {fileID: 11400000, guid: 600f790c850acb84aaf04bebabff8e24, type: 2}
   _player: {fileID: 4257849051552215748, guid: e0daf754b555f6c4b8907f10c5f8b912, type: 3}
-  _enemy: {fileID: 8426696741707852845, guid: c3690034619bb9344b661b7557adb686, type: 3}
+  _enemy: {fileID: -5858354566363931379, guid: c3690034619bb9344b661b7557adb686, type: 3}
 --- !u!4 &588394023
 Transform:
   m_ObjectHideFlags: 0
