@@ -24,7 +24,6 @@ namespace Source.Scripts
             {
                 {"x", position.x},
                 {"y", position.z}
-
             };
             
             MultiplayerManager.Instance.SendMessage("move", data);
