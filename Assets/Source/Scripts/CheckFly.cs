@@ -4,8 +4,8 @@ namespace Source.Scripts
 {
     public class CheckFly : MonoBehaviour
     {
-        [SerializeField] private float _radius;
         [SerializeField] private LayerMask _layerMask;
+        [SerializeField] private float _radius;
         [SerializeField] private float _coyoteTime = 0.15f;
 
         private float _flyTimer = 0;

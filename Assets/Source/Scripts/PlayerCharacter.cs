@@ -39,10 +39,12 @@ namespace Source.Scripts
             _rotateY += rotateY;
         }
 
-        public void GetMoveInfo(out Vector3 position, out Vector3 velocity)
+        public void GetMoveInfo(out Vector3 position, out Vector3 velocity, out float rotateX, out float rotateY)
         {
             position = transform.position;
             velocity = _rigidbody.velocity;
+            rotateX = _head.localEulerAngles.x;
+            rotateY = transform.eulerAngles.y;
         }
 
         public void RotateX(float value)

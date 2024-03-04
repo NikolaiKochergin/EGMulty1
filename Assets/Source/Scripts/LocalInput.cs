@@ -30,7 +30,7 @@ namespace Source.Scripts
 
         private void SendMove()
         {
-            _player.GetMoveInfo(out Vector3 position, out Vector3 velocity);
+            _player.GetMoveInfo(out Vector3 position, out Vector3 velocity, out float rotateX, out float rotateY);
             Dictionary<string, object> data = new Dictionary<string, object>()
             {
                 {"pX", position.x},
@@ -39,6 +39,8 @@ namespace Source.Scripts
                 {"vX", velocity.x},
                 {"vY", velocity.y},
                 {"vZ", velocity.z},
+                {"rX", rotateX},
+                {"rY", rotateY},
             };
             
             MultiplayerManager.Instance.SendMessage("move", data);
