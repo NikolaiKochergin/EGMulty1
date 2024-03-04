@@ -1,22 +1,22 @@
-using System;
 using UnityEngine;
 
 namespace Source.Scripts
 {
-    public class PlayerCharacter : MonoBehaviour
+    public class PlayerCharacter : Character
     {
         [SerializeField] private Transform _head;
         [SerializeField] private Transform _cameraPoint;
         [SerializeField] private Rigidbody _rigidbody;
-        [SerializeField] private float _speed = 5f;
+        [SerializeField] private CheckFly _checkFly;
         [SerializeField] private float _maxHeadAngle = 90f;
         [SerializeField] private float _minHeadAngle = -90f;
         [SerializeField] private float _jumpForce = 6f;
+        [SerializeField] private float _jumpDelay = 0.2f;
 
         private Vector3 _direction;
         private float _rotateY;
         private float _currentRotateX;
-        private bool _isFly = true;
+        private float _jumpTime;
 
         private void Start()
         {
@@ -31,19 +31,6 @@ namespace Source.Scripts
             Move();
             RotateY();
         }
-
-        private void OnCollisionStay(Collision other)
-        {
-            ContactPoint[] contactPoint = other.contacts;
-            foreach (ContactPoint point in contactPoint)
-            {
-                if (point.normal.y > 0.45f)
-                    _isFly = false;
-            }
-        }
-
-        private void OnCollisionExit(Collision other) => 
-            _isFly = true;
 
         public void SetInput(float h, float v, float rotateY)
         {
@@ -66,17 +53,23 @@ namespace Source.Scripts
 
         public void Jump()
         {
-            if(_isFly)
+            if(_checkFly.IsFly)
                 return;
+            
+            if(Time.time - _jumpTime < _jumpDelay)
+                return;
+
+            _jumpTime = Time.time;
             
             _rigidbody.AddForce(0,_jumpForce,0, ForceMode.VelocityChange);
         }
 
         private void Move()
         {
-            Vector3 velocity = (transform.forward * _direction.z + transform.right * _direction.x).normalized * _speed;
+            Vector3 velocity = (transform.forward * _direction.z + transform.right * _direction.x).normalized * Speed;
             velocity.y = _rigidbody.velocity.y;
-            _rigidbody.velocity = velocity;
+            Velocity = velocity;
+            _rigidbody.velocity = Velocity;
         }
 
         private void RotateY()
