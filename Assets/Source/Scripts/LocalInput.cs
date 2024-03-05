@@ -28,16 +28,37 @@ namespace Source.Scripts
 
             bool space = Input.GetKeyDown(KeyCode.Space);
 
+            bool isCrouch = Input.GetKey(KeyCode.LeftControl);
+
             _player.SetInput(h, v, mouseX * _mouseSensitivity);
             _player.RotateX(-mouseY * _mouseSensitivity);
             
             if(space)
                 _player.Jump();
+
+            if (isCrouch != _player.IsCrouch)
+            {
+                _player.SetCrouch(isCrouch);
+                SendCrouch(isCrouch);
+            }
             
             if(isShoot && _gun.TryShoot(out ShootInfo shootInfo)) 
                 SendShoot(ref shootInfo);
             
             SendMove();
+        }
+
+        private void SendCrouch(bool isCrouch)
+        {
+            CrouchInfo crouchInfo = new CrouchInfo()
+            {
+                key = _multiplayerManager.GetSessionID(),
+                isCrch = isCrouch,
+            };
+
+            string json = JsonUtility.ToJson(crouchInfo);
+            
+            _multiplayerManager.SendMessage("crouch", json);
         }
 
         private void SendMove()
@@ -64,6 +85,13 @@ namespace Source.Scripts
             string json = JsonUtility.ToJson(shootInfo);
             _multiplayerManager.SendMessage("shoot", json);
         }
+    }
+
+    [Serializable]
+    public struct CrouchInfo
+    {
+        public string key;
+        public bool isCrch;
     }
 
     [Serializable]

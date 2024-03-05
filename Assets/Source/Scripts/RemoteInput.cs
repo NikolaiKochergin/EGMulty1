@@ -31,6 +31,9 @@ namespace Source.Scripts
             _gun.Shoot(position, velocity);
         }
 
+        public void SetCrouch(bool crouchInfoIsCrch) => 
+            _character.SetCrouch(crouchInfoIsCrch);
+
         public void Destroy()
         {
             _player.OnChange -= OnChange;

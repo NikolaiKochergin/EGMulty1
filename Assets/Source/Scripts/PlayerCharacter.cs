@@ -66,6 +66,9 @@ namespace Source.Scripts
             _rigidbody.AddForce(0,_jumpForce,0, ForceMode.VelocityChange);
         }
 
+        public void SetCrouch(bool value) => 
+            IsCrouch = value;
+
         private void Move()
         {
             Vector3 velocity = (transform.forward * _direction.z + transform.right * _direction.x).normalized * Speed;

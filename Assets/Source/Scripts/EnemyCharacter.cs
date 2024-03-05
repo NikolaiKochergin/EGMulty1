@@ -41,5 +41,8 @@ namespace Source.Scripts
 
         public void SetRotateY(float value) => 
             transform.localEulerAngles = new Vector3(0, value, 0);
+
+        public void SetCrouch(bool crouchInfoIsCrch) =>
+            IsCrouch = crouchInfoIsCrch;
     }
 }

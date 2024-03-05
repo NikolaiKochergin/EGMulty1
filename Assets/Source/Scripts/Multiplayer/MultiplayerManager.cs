@@ -50,6 +50,7 @@ namespace Source.Scripts.Multiplayer
             _room.OnStateChange += OnStateChange;
             
             _room.OnMessage<string>("Shoot", ApplyShoot);
+            _room.OnMessage<string>("Crouch", ApplyCrouch);
         }
 
         private void OnStateChange(State state, bool isfirststate)
@@ -80,6 +81,18 @@ namespace Source.Scripts.Multiplayer
             }
             
             _enemies[shootInfo.key].Shoot(shootInfo);
+        }
+
+        private void ApplyCrouch(string jsonCrouchInfo)
+        {
+            CrouchInfo crouchInfo = JsonUtility.FromJson<CrouchInfo>(jsonCrouchInfo);
+            if (_enemies.ContainsKey(crouchInfo.key) == false)
+            {
+                Debug.LogError($"Enemy with id: {crouchInfo.key} does not exist.");
+                return;
+            }
+
+            _enemies[crouchInfo.key].SetCrouch(crouchInfo.isCrch);
         }
 
         private void CreatePlayer(Player player)
