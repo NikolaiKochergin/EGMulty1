@@ -9,9 +9,11 @@ namespace Source.Scripts.Multiplayer
     {
         [SerializeField] private PlayerCharacter _player;
         [SerializeField] private RemoteInput _enemy;
-        
+
+        private Dictionary<string, RemoteInput> _enemies = new Dictionary<string, RemoteInput>();
         private ColyseusRoom<State> _room;
-        
+
+
         protected override void Awake()
         {
             base.Awake();
@@ -46,6 +48,8 @@ namespace Source.Scripts.Multiplayer
             _room = await Instance.client.JoinOrCreate<State>("state_handler", data);
 
             _room.OnStateChange += OnStateChange;
+            
+            _room.OnMessage<string>("Shoot", ApplyShoot);
         }
 
         private void OnStateChange(State state, bool isfirststate)
@@ -65,6 +69,19 @@ namespace Source.Scripts.Multiplayer
             _room.State.players.OnRemove += RemoveEnemy;
         }
 
+        private void ApplyShoot(string jsonShootInfo)
+        {
+            ShootInfo shootInfo = JsonUtility.FromJson<ShootInfo>(jsonShootInfo);
+
+            if (_enemies.ContainsKey(shootInfo.key) == false)
+            {
+                Debug.LogError($"Enemy with id: {shootInfo.key} does not exist.");
+                return;
+            }
+            
+            _enemies[shootInfo.key].Shoot(shootInfo);
+        }
+
         private void CreatePlayer(Player player)
         {
             Vector3 position = new Vector3(player.pX, player.pY, player.pZ);
@@ -76,10 +93,19 @@ namespace Source.Scripts.Multiplayer
             Vector3 position = new Vector3(player.pX, player.pY, player.pZ);
             RemoteInput enemy = Instantiate(_enemy, position, quaternion.identity);
             enemy.Init(player);
+            
+            _enemies.Add(key, enemy);
         }
 
         private void RemoveEnemy(string key, Player player)
         {
+            if(_enemies.ContainsKey(key) == false)
+                return;
+            
+            RemoteInput enemy = _enemies[key];
+            enemy.Destroy();
+
+            _enemies.Remove(key);
         }
     }
 }

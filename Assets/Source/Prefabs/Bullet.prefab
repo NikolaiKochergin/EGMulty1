@@ -74,6 +74,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rigidbody: {fileID: 5289923850240399514}
+  _lifeTime: 5
 --- !u!1 &812215986656509208
 GameObject:
   m_ObjectHideFlags: 0

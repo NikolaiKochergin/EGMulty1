@@ -6,7 +6,7 @@ namespace Source.Scripts
     {
         private static readonly int Shoot = Animator.StringToHash("Shoot");
         
-        [SerializeField] private PlayerGun _gun;
+        [SerializeField] private Gun _gun;
         [SerializeField] private Animator _animator;
 
         private void Start() => 
