@@ -7,6 +7,8 @@ namespace Source.Scripts.Multiplayer
 {
     public class MultiplayerManager : ColyseusManager<MultiplayerManager>
     {
+        private const string RoomName = "state_handler";
+        
         [SerializeField] private PlayerCharacter _player;
         [SerializeField] private RemoteInput _enemy;
 
@@ -45,18 +47,17 @@ namespace Source.Scripts.Multiplayer
                 { "speed", _player.Speed }
             };
             
-            _room = await Instance.client.JoinOrCreate<State>("state_handler", data);
+            _room = await Instance.client.JoinOrCreate<State>(RoomName, data);
 
             _room.OnStateChange += OnStateChange;
             
-            _room.OnMessage<string>("Shoot", ApplyShoot);
-            _room.OnMessage<string>("Crouch", ApplyCrouch);
+            _room.OnMessage<string>(MessageName.Type.Shoot, ApplyShoot);
+            _room.OnMessage<string>(MessageName.Type.Crouch, ApplyCrouch);
         }
 
         private void OnStateChange(State state, bool isfirststate)
         {
-            if(isfirststate == false)
-                return;
+            _room.OnStateChange -= OnStateChange;
             
             state.players.ForEach((key, player) =>
             {

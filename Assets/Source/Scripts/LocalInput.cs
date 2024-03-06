@@ -58,7 +58,7 @@ namespace Source.Scripts
 
             string json = JsonUtility.ToJson(crouchInfo);
             
-            _multiplayerManager.SendMessage("crouch", json);
+            _multiplayerManager.SendMessage(MessageName.Key.crouch, json);
         }
 
         private void SendMove()
@@ -76,14 +76,14 @@ namespace Source.Scripts
                 {"rY", rotation.y},
             };
             
-            _multiplayerManager.SendMessage("move", data);
+            _multiplayerManager.SendMessage(MessageName.Key.move, data);
         }
 
         private void SendShoot(ref ShootInfo shootInfo)
         {
             shootInfo.key = _multiplayerManager.GetSessionID();
             string json = JsonUtility.ToJson(shootInfo);
-            _multiplayerManager.SendMessage("shoot", json);
+            _multiplayerManager.SendMessage(MessageName.Key.shoot, json);
         }
     }
 
