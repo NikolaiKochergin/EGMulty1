@@ -7,6 +7,7 @@ namespace Source.Scripts
         [SerializeField] private Transform _head;
         [SerializeField] private Transform _cameraPoint;
         [SerializeField] private Rigidbody _rigidbody;
+        [SerializeField] private CapsuleCollider _collider;
         [SerializeField] private CheckFly _checkFly;
         [SerializeField] private float _maxHeadAngle = 90f;
         [SerializeField] private float _minHeadAngle = -90f;
@@ -66,8 +67,20 @@ namespace Source.Scripts
             _rigidbody.AddForce(0,_jumpForce,0, ForceMode.VelocityChange);
         }
 
-        public void SetCrouch(bool value) => 
+        public void SetCrouch(bool value)
+        {
             IsCrouch = value;
+            if (value)
+            {
+                _collider.center = new Vector3(0, 0.75f, 0);
+                _collider.height = 1.5f;
+            }
+            else
+            {
+                _collider.center = new Vector3(0, 1, 0);
+                _collider.height = 2f;
+            }   
+        }
 
         private void Move()
         {

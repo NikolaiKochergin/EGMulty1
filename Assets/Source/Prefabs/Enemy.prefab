@@ -108,6 +108,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Speed>k__BackingField: 5
   _head: {fileID: 3587587101407420655}
+  _collider: {fileID: 5114233461087833207}
 --- !u!114 &-5858354566363931379
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -46,6 +46,7 @@ namespace Source.Scripts
             
             Vector3 position = _character.TargetPosition;
             Vector3 velocity = _character.Velocity;
+            Vector2 rotation = _character.TargetRotation;
             foreach (DataChange dataChange in changes)
             {
                 switch (dataChange.Field)
@@ -69,10 +70,10 @@ namespace Source.Scripts
                         velocity.z = (float) dataChange.Value;
                         break;
                     case "rX":
-                        _character.SetRotateX((float) dataChange.Value);
+                        rotation.x = (float) dataChange.Value;
                         break;
                     case "rY":
-                        _character.SetRotateY((float) dataChange.Value);
+                        rotation.y = (float) dataChange.Value;
                         break;
                     default:
                         Debug.LogWarning($"Field {dataChange.Field} is not processed.");
@@ -80,6 +81,7 @@ namespace Source.Scripts
                 }
             }
 
+            _character.SetRotation(rotation);
             _character.SetMovement(position, velocity, AverageInterval);
         }
 

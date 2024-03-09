@@ -137,6 +137,7 @@ MonoBehaviour:
   _head: {fileID: 3261783583804160495}
   _cameraPoint: {fileID: 6082778747457052336}
   _rigidbody: {fileID: -8473180769963643262}
+  _collider: {fileID: 6812668857754954282}
   _checkFly: {fileID: 5203945309105255720}
   _maxHeadAngle: 90
   _minHeadAngle: -90
