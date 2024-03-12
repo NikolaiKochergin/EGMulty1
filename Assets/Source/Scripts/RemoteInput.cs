@@ -16,11 +16,10 @@ namespace Source.Scripts
 
         private float AverageInterval => _receiveTimeInterval.Sum() / _receiveTimeInterval.Count;
 
-        public void Init(Player player)
+        public void Init(string key, Player player)
         {
             _player = player;
-            _character.SetSpeed(player.speed);
-            _character.SetMaxHP(player.hp);
+            _character.Init(key, player.speed, player.maxHP);
             player.OnChange += OnChange;
         }
 

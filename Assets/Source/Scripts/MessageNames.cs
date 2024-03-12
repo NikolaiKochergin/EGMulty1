@@ -4,6 +4,7 @@
     {
         public static class Key
         {
+            public const string damage = "damage";
             public const string move = "move";
             public const string shoot = "shoot";
         }

@@ -87,14 +87,14 @@ namespace Source.Scripts.Multiplayer
         private void CreatePlayer(Player player)
         {
             Vector3 position = new Vector3(player.pX, player.pY, player.pZ);
-            Instantiate(_player, position, quaternion.identity);
+            player.OnChange += Instantiate(_player, position, quaternion.identity).OnChange;
         }
 
         private void CreateEnemy(string key, Player player)
         {
             Vector3 position = new Vector3(player.pX, player.pY, player.pZ);
             RemoteInput enemy = Instantiate(_enemy, position, quaternion.identity);
-            enemy.Init(player);
+            enemy.Init(key, player);
             
             _enemies.Add(key, enemy);
         }

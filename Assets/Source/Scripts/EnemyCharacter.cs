@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using Source.Scripts.Multiplayer;
 using UnityEngine;
 
 namespace Source.Scripts
@@ -7,10 +9,10 @@ namespace Source.Scripts
         [SerializeField] private Transform _head;
         [SerializeField] private HealthView _healthView;
         
+        private Health _health;
         private float _velocityMagnitude = 0f;
-        
-        public Health Health { get; private set; }
-        
+        private string _sessionID;
+
         public Vector3 TargetPosition { get; private set; } = Vector3.zero;
 
         private void Start() => 
@@ -29,12 +31,24 @@ namespace Source.Scripts
             }
         }
 
-        public void SetSpeed(float value) => Speed = value;
-
-        public void SetMaxHP(int value)
+        public void Init(string sessionID, float speed, int maxHP)
         {
-            Health = new Health(value);
-            _healthView.Initialize(Health);
+            _sessionID = sessionID;
+            SetSpeed(speed);
+            SetMaxHP(maxHP);
+        }
+
+        public void ApplyDamage(int damage)
+        {
+            _health.ApplyDamage(damage);
+
+            Dictionary<string, object> data = new Dictionary<string, object>()
+            {
+                { "id", _sessionID },
+                { "value", damage},
+            };
+            
+            MultiplayerManager.Instance.SendMessage(MessageName.Key.damage, data);
         }
 
         public void SetMovement(in Vector3 position, in Vector3 velocity, in float averageInterval)
@@ -50,5 +64,14 @@ namespace Source.Scripts
 
         public void SetRotateY(float value) => 
             transform.localEulerAngles = new Vector3(0, value, 0);
+
+        private void SetSpeed(float value) => 
+            Speed = value;
+
+        private void SetMaxHP(int value)
+        {
+            _health = new Health(value);
+            _healthView.Initialize(_health);
+        }
     }
 }

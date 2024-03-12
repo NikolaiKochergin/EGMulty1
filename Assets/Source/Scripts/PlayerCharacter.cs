@@ -1,9 +1,12 @@
+using System.Collections.Generic;
+using Colyseus.Schema;
 using UnityEngine;
 
 namespace Source.Scripts
 {
     public class PlayerCharacter : Character
     {
+        [SerializeField] private HealthView _healthView;
         [SerializeField] private Transform _head;
         [SerializeField] private Transform _cameraPoint;
         [SerializeField] private Rigidbody _rigidbody;
@@ -13,6 +16,7 @@ namespace Source.Scripts
         [SerializeField] private float _jumpForce = 6f;
         [SerializeField] private float _jumpDelay = 0.2f;
 
+        private Health _health;
         private Vector3 _direction;
         private float _rotateY;
         private float _currentRotateX;
@@ -24,6 +28,8 @@ namespace Source.Scripts
             camera.parent = _cameraPoint;
             camera.localPosition = Vector3.zero;
             camera.localRotation = Quaternion.identity;
+            _health = new Health(MaxHealth);
+            _healthView.Initialize(_health);
         }
 
         private void FixedUpdate()
@@ -64,6 +70,22 @@ namespace Source.Scripts
             _jumpTime = Time.time;
             
             _rigidbody.AddForce(0,_jumpForce,0, ForceMode.VelocityChange);
+        }
+
+        public void OnChange(List<DataChange> changes)
+        {
+            foreach (DataChange dataChange in changes)
+            {
+                switch (dataChange.Field)
+                {
+                    case "currentHP":
+                        _health.ApplyDamage(_health.CurrentValue - (sbyte)dataChange.Value);
+                        break;
+                    default:
+                        Debug.LogWarning($"Field {dataChange.Field} is not processed.");
+                        break;
+                }
+            }
         }
 
         private void Move()
