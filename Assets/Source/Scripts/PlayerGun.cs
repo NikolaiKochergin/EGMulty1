@@ -4,6 +4,7 @@ namespace Source.Scripts
 {
     public class PlayerGun : Gun
     {
+        [SerializeField] private int _damage = 1;
         [SerializeField] private Transform _shootPoint;
         [SerializeField] private float _bulletSpeed;
         [SerializeField] private float _shootDelay = 0.2f;
@@ -22,7 +23,7 @@ namespace Source.Scripts
             _lastShootTime = Time.time;
             
             Instantiate(BulletPrefab, _shootPoint.position, _shootPoint.rotation)
-                .Init(velocity);
+                .Init(velocity, _damage);
 
             info.pX = position.x;
             info.pY = position.y;

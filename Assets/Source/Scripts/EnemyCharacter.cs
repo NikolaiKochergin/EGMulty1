@@ -5,8 +5,11 @@ namespace Source.Scripts
     public class EnemyCharacter : Character
     {
         [SerializeField] private Transform _head;
+        [SerializeField] private HealthView _healthView;
         
         private float _velocityMagnitude = 0f;
+        
+        public Health Health { get; private set; }
         
         public Vector3 TargetPosition { get; private set; } = Vector3.zero;
 
@@ -27,6 +30,12 @@ namespace Source.Scripts
         }
 
         public void SetSpeed(float value) => Speed = value;
+
+        public void SetMaxHP(int value)
+        {
+            Health = new Health(value);
+            _healthView.Initialize(Health);
+        }
 
         public void SetMovement(in Vector3 position, in Vector3 velocity, in float averageInterval)
         {

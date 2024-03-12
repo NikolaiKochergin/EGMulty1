@@ -20,6 +20,7 @@ namespace Source.Scripts
         {
             _player = player;
             _character.SetSpeed(player.speed);
+            _character.SetMaxHP(player.hp);
             player.OnChange += OnChange;
         }
 
