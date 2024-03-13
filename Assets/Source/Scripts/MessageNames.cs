@@ -12,6 +12,7 @@
         public static class Type
         {
             public const string Shoot = "Shoot";
+            public const string Restart = "Restart";
         }
     }
 }

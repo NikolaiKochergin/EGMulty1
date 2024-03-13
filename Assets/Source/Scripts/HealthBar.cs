@@ -11,10 +11,7 @@ namespace Source.Scripts
         private void Awake() => 
             _defaultWidth = _fill.sizeDelta.x;
 
-        public void SetFill(float value)
-        {
-            Debug.LogWarning("Health value " + value );
+        public void SetFill(float value) => 
             _fill.sizeDelta = new Vector2(_defaultWidth * value, _fill.sizeDelta.y);
-        }
     }
 }

@@ -51,6 +51,9 @@ namespace Source.Scripts
             MultiplayerManager.Instance.SendMessage(MessageName.Key.damage, data);
         }
 
+        public void RestoreHP(int newValue) => 
+            _health.SetCurrentHP(newValue);
+
         public void SetMovement(in Vector3 position, in Vector3 velocity, in float averageInterval)
         {
             TargetPosition = position + velocity * averageInterval;

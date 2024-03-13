@@ -8,13 +8,15 @@ namespace Source.Scripts.Multiplayer
     public class MultiplayerManager : ColyseusManager<MultiplayerManager>
     {
         private const string RoomName = "state_handler";
-        
+
+        [SerializeField] private LossCounter _lossCounter;
         [SerializeField] private PlayerCharacter _player;
         [SerializeField] private RemoteInput _enemy;
 
         private Dictionary<string, RemoteInput> _enemies = new Dictionary<string, RemoteInput>();
         private ColyseusRoom<State> _room;
 
+        public LossCounter LossCounter => _lossCounter;
 
         protected override void Awake()
         {
@@ -87,7 +89,11 @@ namespace Source.Scripts.Multiplayer
         private void CreatePlayer(Player player)
         {
             Vector3 position = new Vector3(player.pX, player.pY, player.pZ);
-            player.OnChange += Instantiate(_player, position, quaternion.identity).OnChange;
+
+            PlayerCharacter playerCharacter = Instantiate(_player, position, quaternion.identity);
+            player.OnChange += playerCharacter.OnChange;
+            
+            _room.OnMessage<string>(MessageName.Type.Restart, playerCharacter.GetComponent<LocalInput>().Restart);
         }
 
         private void CreateEnemy(string key, Player player)

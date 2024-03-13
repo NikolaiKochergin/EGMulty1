@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Colyseus.Schema;
+using Source.Scripts.Multiplayer;
 using UnityEngine;
 
 namespace Source.Scripts
@@ -78,11 +79,12 @@ namespace Source.Scripts
             {
                 switch (dataChange.Field)
                 {
-                    case "currentHP":
-                        _health.ApplyDamage(_health.CurrentValue - (sbyte)dataChange.Value);
+                    
+                    case "loss":
+                        MultiplayerManager.Instance.LossCounter.SetPlayerLoss((byte)dataChange.Value);
                         break;
-                    default:
-                        Debug.LogWarning($"Field {dataChange.Field} is not processed.");
+                    case "currentHP":
+                        _health.SetCurrentHP((sbyte)dataChange.Value);
                         break;
                 }
             }

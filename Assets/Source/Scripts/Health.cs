@@ -33,5 +33,14 @@ namespace Source.Scripts
                 Changed?.Invoke();
             }
         }
+
+        public void SetCurrentHP(int newValue)
+        {
+            CurrentValue = newValue > MaxValue
+                ? MaxValue
+                : newValue;
+            
+            Changed?.Invoke();
+        }
     }
 }
