@@ -4,12 +4,16 @@ namespace Source.Scripts
 {
     public class PlayerGun : Gun
     {
+        [SerializeField] private GameObject _gunView;
         [SerializeField] private int _damage = 1;
         [SerializeField] private Transform _shootPoint;
         [SerializeField] private float _bulletSpeed;
         [SerializeField] private float _shootDelay = 0.2f;
 
         private float _lastShootTime;
+
+        public void SetActive(bool value) => 
+            _gunView.gameObject.SetActive(value);
 
         public bool TryShoot(out ShootInfo info)
         {

@@ -79,7 +79,6 @@ namespace Source.Scripts
             {
                 switch (dataChange.Field)
                 {
-                    
                     case "loss":
                         MultiplayerManager.Instance.LossCounter.SetPlayerLoss((byte)dataChange.Value);
                         break;

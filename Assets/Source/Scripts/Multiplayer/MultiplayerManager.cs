@@ -55,6 +55,7 @@ namespace Source.Scripts.Multiplayer
             _room.OnStateChange += OnStateChange;
             
             _room.OnMessage<string>(MessageName.Type.Shoot, ApplyShoot);
+            _room.OnMessage<string>(MessageName.Type.Weapon, ApplyChangeWeapon);
         }
 
         private void OnStateChange(State state, bool isfirststate)
@@ -84,6 +85,18 @@ namespace Source.Scripts.Multiplayer
             }
             
             _enemies[shootInfo.key].Shoot(shootInfo);
+        }
+
+        private void ApplyChangeWeapon(string jsonChangeWeaponInfo)
+        {
+            ChangeWeaponInfo changeWeaponInfo = JsonUtility.FromJson<ChangeWeaponInfo>(jsonChangeWeaponInfo);
+            if (_enemies.ContainsKey(changeWeaponInfo.key) == false)
+            {
+                Debug.LogError($"Enemy with id: {changeWeaponInfo.key} does not exist.");
+                return;
+            }
+
+            _enemies[changeWeaponInfo.key].SetWeapon(changeWeaponInfo.id);
         }
 
         private void CreatePlayer(Player player)

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Source.Scripts.Multiplayer;
 using UnityEngine;
 
@@ -9,15 +10,19 @@ namespace Source.Scripts
     public class LocalInput : MonoBehaviour
     {
         [SerializeField] private PlayerCharacter _player;
-        [SerializeField] private PlayerGun _gun;
+        [SerializeField] private PlayerGun[] _guns;
         [SerializeField] private float _mouseSensitivity = 2f;
         [SerializeField] private float _restartDelay = 3f;
 
         private MultiplayerManager _multiplayerManager;
         private bool _hold = false;
+        private PlayerGun _currentGun;
 
-        private void Start() => 
+        private void Start()
+        {
             _multiplayerManager = MultiplayerManager.Instance;
+            SetWeapon(WeaponId.Gun);
+        }
 
         private void Update()
         {
@@ -40,10 +45,39 @@ namespace Source.Scripts
             if(space)
                 _player.Jump();
             
-            if(isShoot && _gun.TryShoot(out ShootInfo shootInfo)) 
+            if(isShoot && _currentGun.TryShoot(out ShootInfo shootInfo)) 
                 SendShoot(ref shootInfo);
+
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+                SetWeapon(WeaponId.Gun);
+                
+            if(Input.GetKeyDown(KeyCode.Alpha2))
+                SetWeapon(WeaponId.Shotgun);
             
             SendMove();
+        }
+
+        private void SetWeapon(WeaponId id)
+        {
+            foreach (PlayerGun gun in _guns)
+            {
+                if (gun.Id == id)
+                {
+                    gun.SetActive(true);
+                    _currentGun = gun;
+                    ChangeWeaponInfo data = new ChangeWeaponInfo
+                    {
+                        key = _multiplayerManager.GetSessionID(),
+                        id = id,
+                    };
+                    string json = JsonUtility.ToJson(data);
+                    _multiplayerManager.SendMessage(MessageName.Key.weapon, json);
+                }
+                else
+                {
+                    gun.SetActive(false);
+                }
+            }
         }
 
         private void SendMove()
@@ -118,5 +152,11 @@ namespace Source.Scripts
     {
         public float x;
         public float z;
+    }
+
+    public struct ChangeWeaponInfo
+    {
+        public string key;
+        public WeaponId id;
     }
 }

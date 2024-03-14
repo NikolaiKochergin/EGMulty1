@@ -9,11 +9,12 @@ namespace Source.Scripts
     public class RemoteInput : MonoBehaviour
     {
         [SerializeField] private EnemyCharacter _character;
-        [SerializeField] private EnemyGun _gun;
+        [SerializeField] private EnemyGun[] _guns;
 
         private readonly List<float> _receiveTimeInterval = new List<float>{0, 0, 0, 0, 0};
         private float _lastReceiveTime = 0f;
         private Player _player;
+        private EnemyGun _currentGun;
 
         private float AverageInterval => _receiveTimeInterval.Sum() / _receiveTimeInterval.Count;
 
@@ -22,6 +23,7 @@ namespace Source.Scripts
             _player = player;
             _character.Init(key, player.speed, player.maxHP);
             player.OnChange += OnChange;
+            SetWeapon(WeaponId.Gun);
         }
 
         public void Shoot(in ShootInfo info)
@@ -29,7 +31,23 @@ namespace Source.Scripts
             Vector3 position = new Vector3(info.pX, info.pY, info.pZ);
             Vector3 velocity = new Vector3(info.dX, info.dY, info.dZ);
             
-            _gun.Shoot(position, velocity);
+            _currentGun.Shoot(position, velocity);
+        }
+
+        public void SetWeapon(WeaponId id)
+        {
+            foreach (EnemyGun gun in _guns)
+            {
+                if (gun.Id == id)
+                {
+                    gun.SetActive(true);
+                    _currentGun = gun;
+                }
+                else
+                {
+                    gun.SetActive(false);
+                }
+            }
         }
 
         public void Destroy()
