@@ -12,6 +12,7 @@ namespace Source.Scripts.Multiplayer
         [SerializeField] private LossCounter _lossCounter;
         [SerializeField] private PlayerCharacter _player;
         [SerializeField] private RemoteInput _enemy;
+        [SerializeField] private Vector3[] _spawnPoints;
 
         private Dictionary<string, RemoteInput> _enemies = new Dictionary<string, RemoteInput>();
         private ColyseusRoom<State> _room;
@@ -48,6 +49,7 @@ namespace Source.Scripts.Multiplayer
             {
                 { "speed", _player.Speed },
                 { "hp", _player.MaxHealth },
+                { "sp", _spawnPoints },
             };
             
             _room = await Instance.client.JoinOrCreate<State>(RoomName, data);

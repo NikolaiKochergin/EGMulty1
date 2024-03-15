@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using Source.Scripts.Multiplayer;
 using UnityEngine;
 
@@ -154,6 +153,7 @@ namespace Source.Scripts
         public float z;
     }
 
+    [Serializable]
     public struct ChangeWeaponInfo
     {
         public string key;
