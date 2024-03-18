@@ -558,6 +558,7 @@ GameObject:
   m_Component:
   - component: {fileID: 588394023}
   - component: {fileID: 588394022}
+  - component: {fileID: 588394024}
   m_Layer: 0
   m_Name: MultiplayerManager
   m_TagString: Untagged
@@ -578,6 +579,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _colyseusSettings: {fileID: 11400000, guid: 600f790c850acb84aaf04bebabff8e24, type: 2}
+  _skins: {fileID: 588394024}
   _lossCounter: {fileID: 709643679}
   _player: {fileID: 7098332982314930299, guid: e0daf754b555f6c4b8907f10c5f8b912, type: 3}
   _enemy: {fileID: -5858354566363931379, guid: c3690034619bb9344b661b7557adb686, type: 3}
@@ -597,6 +599,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &588394024
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 588394021}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93898395fe72f934e8fb6a6747abb5b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materials:
+  - {fileID: 2100000, guid: 66aaf315e36cc4e45bfcda22a3a6c80c, type: 2}
+  - {fileID: 2100000, guid: 70a0d02d6c4fba0478ad53e3057dfa88, type: 2}
+  - {fileID: 2100000, guid: 56a5eab2cc3aa0f4c9ade0580ebb5e92, type: 2}
+  - {fileID: 2100000, guid: 7910d225008080e4e8e078040d4d3570, type: 2}
+  - {fileID: 2100000, guid: 1c058e325662ce947b2956976f945de1, type: 2}
 --- !u!1 &669779704
 GameObject:
   m_ObjectHideFlags: 0

@@ -10,6 +10,7 @@ namespace Source.Scripts.Multiplayer
     {
         private const string RoomName = "state_handler";
 
+        [SerializeField] private Skins _skins;
         [SerializeField] private LossCounter _lossCounter;
         [SerializeField] private PlayerCharacter _player;
         [SerializeField] private RemoteInput _enemy;
@@ -18,6 +19,7 @@ namespace Source.Scripts.Multiplayer
         private Dictionary<string, RemoteInput> _enemies = new Dictionary<string, RemoteInput>();
         private ColyseusRoom<State> _room;
 
+        public Skins Skins => _skins;
         public LossCounter LossCounter => _lossCounter;
         public SpawnPoints SpawnPoints => _spawnPoints;
 
@@ -51,6 +53,7 @@ namespace Source.Scripts.Multiplayer
             
             Dictionary<string, object> data = new Dictionary<string, object>()
             {
+                { "skins", _skins.Length},
                 { "points", _spawnPoints.Length},
                 { "speed", _player.Speed },
                 { "hp", _player.MaxHealth },
@@ -105,6 +108,8 @@ namespace Source.Scripts.Multiplayer
             player.OnChange += playerCharacter.OnChange;
             
             _room.OnMessage<int>(MessageName.Type.Restart, playerCharacter.GetComponent<LocalInput>().Restart);
+            
+            playerCharacter.GetComponent<SetSkin>().Set(_skins.GetMaterial(player.skin));
         }
 
         private void CreateEnemy(string key, Player player)
@@ -112,6 +117,7 @@ namespace Source.Scripts.Multiplayer
             Vector3 position = new Vector3(player.pX, player.pY, player.pZ);
             RemoteInput enemy = Instantiate(_enemy, position, quaternion.identity);
             enemy.Init(key, player);
+            enemy.GetComponent<SetSkin>().Set(_skins.GetMaterial(player.skin));
             
             _enemies.Add(key, enemy);
         }
