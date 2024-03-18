@@ -155,7 +155,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4257849051552215748}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 200
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -210,7 +210,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <MaxHealth>k__BackingField: 10
-  <Speed>k__BackingField: 5
+  <Speed>k__BackingField: 6
   _healthView: {fileID: 4009626142046124137}
   _head: {fileID: 3261783583804160495}
   _cameraPoint: {fileID: 6082778747457052336}
@@ -235,6 +235,7 @@ MonoBehaviour:
   _player: {fileID: 7098332982314930299}
   _gun: {fileID: 6528124326572352667}
   _mouseSensitivity: 2
+  _restartDelay: 3
 --- !u!114 &5203945309105255720
 MonoBehaviour:
   m_ObjectHideFlags: 0
