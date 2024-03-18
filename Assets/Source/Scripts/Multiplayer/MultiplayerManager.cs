@@ -2,6 +2,7 @@
 using Colyseus;
 using Unity.Mathematics;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Source.Scripts.Multiplayer
 {
@@ -12,11 +13,13 @@ namespace Source.Scripts.Multiplayer
         [SerializeField] private LossCounter _lossCounter;
         [SerializeField] private PlayerCharacter _player;
         [SerializeField] private RemoteInput _enemy;
+        [SerializeField] private SpawnPoints _spawnPoints;
 
         private Dictionary<string, RemoteInput> _enemies = new Dictionary<string, RemoteInput>();
         private ColyseusRoom<State> _room;
 
         public LossCounter LossCounter => _lossCounter;
+        public SpawnPoints SpawnPoints => _spawnPoints;
 
         protected override void Awake()
         {
@@ -44,10 +47,17 @@ namespace Source.Scripts.Multiplayer
 
         private async void Connect()
         {
+            _spawnPoints.GetPoint(Random.Range(0, _spawnPoints.Length), out Vector3 spawnPosition, out Vector3 spawnRotation);
+            
             Dictionary<string, object> data = new Dictionary<string, object>()
             {
+                { "points", _spawnPoints.Length},
                 { "speed", _player.Speed },
                 { "hp", _player.MaxHealth },
+                { "pX", spawnPosition.x },
+                { "pY", spawnPosition.y},
+                { "pZ", spawnPosition.z },
+                { "rY", spawnRotation.y},
             };
             
             _room = await Instance.client.JoinOrCreate<State>(RoomName, data);
@@ -89,11 +99,12 @@ namespace Source.Scripts.Multiplayer
         private void CreatePlayer(Player player)
         {
             Vector3 position = new Vector3(player.pX, player.pY, player.pZ);
-
-            PlayerCharacter playerCharacter = Instantiate(_player, position, quaternion.identity);
+            Quaternion rotation = Quaternion.Euler(0, player.rY, 0);
+            
+            PlayerCharacter playerCharacter = Instantiate(_player, position, rotation);
             player.OnChange += playerCharacter.OnChange;
             
-            _room.OnMessage<string>(MessageName.Type.Restart, playerCharacter.GetComponent<LocalInput>().Restart);
+            _room.OnMessage<int>(MessageName.Type.Restart, playerCharacter.GetComponent<LocalInput>().Restart);
         }
 
         private void CreateEnemy(string key, Player player)
