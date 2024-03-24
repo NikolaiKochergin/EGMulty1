@@ -155,3 +155,5 @@ sysinfo.txt
 # End of https://www.toptal.com/developers/gitignore/api/unity,rider
 .idea/
 artifacts/
+Assets/Epic Toon FX/
+Assets/Epic Toon FX.meta
