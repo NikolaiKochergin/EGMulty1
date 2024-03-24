@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Source.Scripts
 {
-    public class EnemyCharacter : Character
+    public class EnemyCharacter : Character , IDamageable
     {
         [SerializeField] private Transform _head;
         [SerializeField] private HealthView _healthView;

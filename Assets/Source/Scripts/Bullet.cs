@@ -19,7 +19,7 @@ namespace Source.Scripts
 
         private void OnCollisionEnter(Collision other)
         {
-            if (other.collider.TryGetComponent(out EnemyCharacter enemy)) 
+            if (other.collider.TryGetComponent(out IDamageable enemy)) 
                 enemy.ApplyDamage(_damage);
             
             Destroy();
